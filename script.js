@@ -341,6 +341,7 @@ function render() {
 
   toggleButton.classList.toggle("is-running", timerState.isRunning);
   toggleButton.setAttribute("aria-label", timerState.isRunning ? "暂停" : "开始");
+  toggleButton.hidden = isResting;
   toggleButton.disabled = isResting;
   fastForwardButton.hidden = timerState.mode !== "focusing" || !timerState.hasStarted;
 
