@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Music</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <input id="musicFolder" class="visually-hidden" type="file" accept=".mp3,audio/mpeg" webkitdirectory multiple />
+
+    <main class="app" aria-label="Focus Music timer">
+      <button id="toggleStats" class="corner-button stats-button" type="button" aria-label="查看月度统计">
+        <svg class="corner-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5.5 17.5h2.25v-6H5.5v6Zm5.38 0h2.24v-11h-2.24v11Zm5.37 0h2.25V9h-2.25v8.5ZM4 19V10h5.25v9H4Zm5.38 0V5h5.24v14H9.38Zm5.37 0V7.5H20V19h-5.25Z" />
+        </svg>
+      </button>
+
+      <button id="toggleSettings" class="corner-button settings-button" type="button" aria-label="打开设置">
+        <svg class="corner-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.35A3.65 3.65 0 1 1 12 15.65 3.65 3.65 0 0 1 12 8.35Zm0 1.5A2.15 2.15 0 1 0 12 14.15 2.15 2.15 0 0 0 12 9.85Zm7.1 2.87a7.3 7.3 0 0 0 .02-.72c0-.24 0-.48-.03-.72l1.69-1.28-1.67-2.9-1.97.82a7.34 7.34 0 0 0-1.24-.72L15.63 5h-3.35l-.27 2.2c-.44.19-.85.43-1.24.72L8.8 7.1 7.13 10l1.69 1.28a7.4 7.4 0 0 0 0 1.44L7.13 14l1.67 2.9 1.97-.82c.39.29.8.53 1.24.72l.27 2.2h3.35l.27-2.2c.44-.19.85-.43 1.24-.72l1.97.82 1.67-2.9-1.68-1.28Zm-1.54-1.36c.04.21.06.43.06.64s-.02.43-.06.64l-.12.63 1.46 1.1-.43.75-1.7-.7-.5.41c-.34.28-.72.5-1.13.66l-.6.24-.23 1.77h-.87l-.22-1.77-.6-.24a5.44 5.44 0 0 1-1.14-.66l-.5-.41-1.69.7-.44-.75 1.46-1.1-.12-.63a5.07 5.07 0 0 1 0-1.28l.12-.63-1.46-1.1.44-.75 1.69.7.5-.41c.34-.28.73-.5 1.14-.66l.6-.24.22-1.77h.87l.23 1.77.6.24c.41.16.79.38 1.13.66l.5.41 1.7-.7.43.75-1.46 1.1.12.63Z" />
+        </svg>
+      </button>
+
+      <section id="settingsPanel" class="settings-panel" aria-label="设置" hidden>
+        <div class="settings-title">设置</div>
+
+        <label class="settings-row" for="includeMusicInFocus">
+          <span class="settings-label">音乐计入专注</span>
+          <span class="toggle">
+            <input id="includeMusicInFocus" class="toggle-input" type="checkbox" />
+            <span class="toggle-track">
+              <span class="toggle-thumb"></span>
+            </span>
+          </span>
+        </label>
+
+        <div class="settings-row">
+          <span class="settings-label">选择音乐文件夹</span>
+          <button id="chooseMusic" class="folder-button" type="button" aria-label="选择音乐文件夹">
+            <svg class="folder-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.75 6.25A2.25 2.25 0 0 1 6 4h4.05c.6 0 1.17.24 1.6.66l1.09 1.09H18A2.25 2.25 0 0 1 20.25 8v8A2.25 2.25 0 0 1 18 18.25H6A2.25 2.25 0 0 1 3.75 16V6.25Zm2.25-.75a.75.75 0 0 0-.75.75V16c0 .41.34.75.75.75h12a.75.75 0 0 0 .75-.75V8a.75.75 0 0 0-.75-.75h-5.88L10.6 5.72a.75.75 0 0 0-.53-.22H6Z" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="timerView" class="timer-panel" aria-live="polite">
+        <div id="todayTotal" class="today-total">今日 0 分钟</div>
+
+        <div id="timer" class="timer">30:00</div>
+        <div id="restState" class="rest-state" hidden>
+          <div class="rest-label">休息中</div>
+          <div id="trackName" class="track-name"></div>
+          <button id="skipRest" class="text-button" type="button">跳过</button>
+        </div>
+
+        <div class="duration-options" aria-label="专注时长">
+          <button class="duration-option" type="button" data-duration="15">15</button>
+          <button class="duration-option" type="button" data-duration="25">25</button>
+          <button class="duration-option is-selected" type="button" data-duration="30">30</button>
+          <button class="duration-option" type="button" data-duration="45">45</button>
+          <button class="duration-option" type="button" data-duration="60">60</button>
+          <input
+            id="customDuration"
+            class="custom-duration"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="120"
+            placeholder="自定"
+            aria-label="自定义专注分钟数"
+          />
+        </div>
+
+        <div class="controls" aria-label="计时器控制">
+          <button id="toggleTimer" class="icon-button" type="button" aria-label="开始">
+            <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5.75v12.5L18.5 12 8 5.75Z" />
+            </svg>
+            <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5.5h2.8v13H8v-13Zm5.2 0H16v13h-2.8v-13Z" />
+            </svg>
+          </button>
+
+          <button id="resetTimer" class="icon-button secondary" type="button" aria-label="重置">
+            <svg class="icon icon-reset" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5.25a6.74 6.74 0 0 1 6.28 4.3l.97-2.19 1.37.61-1.86 4.18-4.17-1.86.61-1.37 1.7.76A5.25 5.25 0 1 0 17.25 12h1.5A6.75 6.75 0 1 1 12 5.25Z" />
+            </svg>
+          </button>
+
+          <button id="fastForward" class="icon-button secondary" type="button" aria-label="快进">
+            <svg class="icon icon-fast-forward" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 6.25 12.5 12 5 17.75V6.25Zm8 0L20.5 12 13 17.75V6.25Z" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="statsView" class="stats-panel" aria-label="月度统计" hidden>
+        <div class="stats-heading">
+          <div id="statsMonth" class="stats-month"></div>
+          <button id="closeStats" class="stats-close" type="button" aria-label="返回计时器">
+            <svg class="stats-close-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7.05 8.11 1.06-1.06L12 10.94l3.89-3.89 1.06 1.06L13.06 12l3.89 3.89-1.06 1.06L12 13.06l-3.89 3.89-1.06-1.06L10.94 12 7.05 8.11Z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="stats-summary">
+          <div>
+            <div id="monthTotal" class="stats-value">0</div>
+            <div class="stats-caption">本月分钟</div>
+          </div>
+          <div>
+            <div id="activeDays" class="stats-value">0</div>
+            <div class="stats-caption">专注天数</div>
+          </div>
+        </div>
+
+        <div id="monthGrid" class="month-grid" aria-label="本月每日专注时长"></div>
+      </section>
+    </main>
+
+    <audio id="rewardAudio"></audio>
+    <script src="script.js"></script>
+  </body>
+</html>
