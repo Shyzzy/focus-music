@@ -70,8 +70,3 @@ node tests/timer.test.js
 - 极简图标按钮
 - 设置和统计入口弱化处理
 - 尽量减少非必要文字和装饰
-
-## 开发记录
-
-- 里程碑拆解见 [MILESTONES.md](MILESTONES.md)
-- 变更记录见 [CHANGELOG.md](CHANGELOG.md)
